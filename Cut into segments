@@ -1,0 +1,26 @@
+#include <climits>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+int solveMax(int n, int x, int y, int z, vector<int>& dp) {
+    if (n == 0) return 0;         
+    if (n < 0) return INT_MIN;    
+    if (dp[n] != -1) return dp[n]; 
+
+    
+    int a = solveMax(n - x, x, y, z, dp) + 1;
+    int b = solveMax(n - y, x, y, z, dp) + 1;
+    int c = solveMax(n - z, x, y, z, dp) + 1;
+
+    return dp[n] = max({a, b, c});
+}
+
+int cutSegments(int n, int x, int y, int z) {
+    vector<int> dp(n + 1, -1);
+    int ans = solveMax(n, x, y, z, dp);
+
+   
+    return (ans < 0) ? 0 : ans;
+}
