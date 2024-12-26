@@ -1,0 +1,45 @@
+// Ye code "frog jump with k distance" problem ka solution hai, jisme frog ko minimum cost me last stone tak pahuchana hai.
+
+// f() ek recursive function hai jo idx stone tak minimum cost calculate karta hai.
+// Parameters:
+// idx: Abhi frog kis stone par hai.
+// k: Frog maximum k stones tak jump kar sakta hai.
+// height: Stones ki heights ka array.
+// dp: Memoization array jo already calculated results ko store karta hai.
+
+int f(int idx, int k, vector<int> &height, vector<int>& dp){
+    // Base case: Agar frog index 0 par hai, toh cost 0 hogi.
+    if(idx==0) return 0;
+
+    if(dp[idx]!=-1) return dp[idx];
+
+    int minCost = INT_MAX; 
+
+    // Har possible jump ko check karte hain (1 se k tak).
+    for(int j=1;j<=k;j++){
+       
+        if(idx-j>=0){
+            // Jump ki cost calculate karte hain:
+            // - f(idx-j, k, height, dp): Previous stone tak ki minimum cost.
+            // - abs(height[idx] - height[idx-j]): Current jump ki cost.
+            int jumpCost = f(idx-j,k,height,dp) + abs(height[idx]-height[idx-j]);
+            
+            // Minimum cost ko update karte hain.
+            minCost = min(minCost,jumpCost);
+        }
+    }
+    // Current stone tak ki minimum cost ko dp array me store karte hain.
+    return dp[idx] = minCost;
+}
+
+// minimizeCost() function problem ka entry point hai.
+// Parameters:
+// n: Stones ki total count.
+// k: Frog maximum k stones tak jump kar sakta hai.
+// height: Stones ki heights ka array.
+int minimizeCost(int n, int k, vector<int> &height){
+    // Memoization array ko initialize karte hain (-1 ka matlab abhi calculate nahi hua).
+    vector<int>dp(n,-1);
+    // Last stone tak minimum cost calculate karte hain (index n-1).
+    return f(n-1,k,height,dp);
+}
