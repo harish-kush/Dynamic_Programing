@@ -1,0 +1,28 @@
+class Solution {
+public:
+
+// Backtracking use karte hain jo saare possible combinations explore karta hai.
+// Ek helper function likha hai jo recursion ka use karke combinations banata hai:
+// - Agar current string ki length `2*n` ho jaye, to wo ek valid combination hai, usse result mein add karte hain.
+// - Agar open parentheses ka count `n` se kam ho, to ek '(' add karte hain aur recursion call karte hain.
+// - Agar close parentheses ka count open se kam ho, to ek ')' add karte hain aur recursion call karte hain.
+// Base case tab hai jab string ka length `2*n` ho jaye.
+// Saare valid combinations result vector `res` mein store hote hain, jo final answer return karta hai.
+
+    void helper(string curr, int open , int close, int n, vector<string>& res){
+    if(curr.length()==2*n) {
+        res.push_back(curr);
+        return;
+    }
+
+    if(n>open) helper(curr+'(',open+1,close,n,res);
+
+    if(open>close) helper(curr+')',open,close+1,n,res);
+
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string>res;
+        helper("",0,0,n,res);
+        return res;
+    }
+};
