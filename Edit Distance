@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int helper(string word1, string word2, int i, int j,vector<vector<int>> &dp){
+        // word1 is small 
+        if(i==word1.length()) return word2.length()-j;
+          // word2 is small 
+        if(j==word2.length()) return word1.length()-i;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int ans = 0;
+        if(word1[i]==word2[j]) return helper(word1,word2,i+1,j+1,dp);
+        else{
+            int insertAns = 1 + helper(word1,word2,i,j+1,dp);
+            int delAns = 1 + helper(word1,word2,i+1,j,dp);
+            int replaceAns = 1 + helper(word1,word2,i+1,j+1,dp);
+            ans = min(insertAns,min(delAns,replaceAns));
+        }
+        return dp[i][j]=ans;
+    }
+    int minDistance(string word1, string word2) {
+        vector<vector<int>>dp(word1.size(),vector<int>(word2.size(),-1));
+       return helper(word1,word2,0,0,dp);
+    }
+};
