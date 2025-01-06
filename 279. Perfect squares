@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int helper(vector<int>& nums, int n,vector<int>& dp) {
+        if (n < 0) return INT_MAX; // Agar n negative ho gaya toh yeh path invalid hai 
+        if (n == 0) return 0;      // Agar n 0 ho gaya toh ek valid combination mila
+
+        if(dp[n]!=-1) return dp[n];
+
+        int minCount = INT_MAX;
+        for (int x : nums) {
+            int count = helper(nums, n - x,dp);
+            if (count != INT_MAX) { // Valid path ho toh minimum count update karo
+                minCount = min(minCount, 1 + count);
+            }
+        }
+        return dp[n]=minCount;
+    }
+
+    int numSquares(int n) {
+        vector<int> nums;
+
+        for (int i = 1; i * i <= n; i++) { // Sirf perfect squares ko push karo
+            nums.push_back(i * i);
+        }
+        vector<int>dp(n+1,-1);
+        return helper(nums, n,dp);
+    }
+};
